@@ -191,7 +191,7 @@
 
         /* --- NAYA SECTION CSS: "Also from" UI --- */
         .also-from-section {
-            padding: 40px 20px 80px;
+            padding: 40px 20px 40px;
             max-width: 600px;
             margin: 0 auto;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -247,7 +247,6 @@
             background: rgba(138, 43, 226, 0.15);
         }
 
-        /* Agar tum apni koi PNG image lagana chaho Thejaya ke liye toh yaha fit ho jayegi */
         .icon-circle img {
             width: 32px; 
             height: 32px;
@@ -258,6 +257,36 @@
             font-size: 0.85rem;
             color: #aaa;
             text-align: center;
+        }
+
+        /* --- WhatsApp Small Footer Button CSS --- */
+        .whatsapp-footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 30px;
+        }
+        
+        .whatsapp-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(37, 211, 102, 0.1);
+            color: #25D366;
+            border: 1px solid #25D366;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .whatsapp-btn:hover {
+            background: #25D366;
+            color: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(37, 211, 102, 0.4);
         }
     </style>
 </head>
@@ -319,6 +348,17 @@
 
         </div>
     </section>
+
+    <!-- WhatsApp Small Footer Button HTML -->
+    <div class="whatsapp-footer">
+        <a href="https://wa.me/YOUR_NUMBER_HERE" target="_blank" class="whatsapp-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.031 0C5.4 0 0 5.4 0 12.031c0 2.125.553 4.156 1.603 5.969L.016 24l6.188-1.594c1.765.953 3.75 1.484 5.828 1.484 6.631 0 12.031-5.4 12.031-12.031C24.062 5.4 18.662 0 12.031 0zm3.766 17.063c-.156.469-.875.891-1.25.938-.344.031-1.047.25-3.344-.688-2.766-1.125-4.547-3.953-4.688-4.141-.125-.172-1.125-1.5-1.125-2.875s.703-2.031.953-2.313c.234-.266.516-.328.688-.328.172 0 .344 0 .484.016.156.016.359-.063.563.422.219.531.734 1.797.813 1.953.063.156.125.359.016.594-.094.219-.156.359-.313.547-.141.172-.313.375-.438.516-.156.156-.328.328-.141.656.188.328.828 1.375 1.766 2.219 1.203 1.078 2.219 1.422 2.547 1.578.328.156.516.125.719-.109.188-.234.828-.953 1.047-1.281.219-.328.438-.266.734-.156.313.109 1.953.922 2.281 1.094.328.156.547.234.625.375.094.141.094.813-.063 1.281z"/>
+            </svg>
+            <span>WhatsApp</span>
+        </a>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const observer = new IntersectionObserver((entries) => {
