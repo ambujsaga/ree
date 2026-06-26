@@ -59,7 +59,7 @@
 
         /* Brand Symbol Image Styling (Resized) */
         .brand-logo {
-            height: 150px; /* Size badha diya hai text ki jagah cover karne ke liye */
+            height: 150px; 
             width: auto;
             max-width: 90vw;
             object-fit: contain;
@@ -145,7 +145,7 @@
             transition: all 1s ease-out;
             display: flex;
             flex-direction: column;
-            align-items: flex-end; /* Signature ko right side align karne ke liye */
+            align-items: flex-end; 
         }
 
         .reveal-text h2 {
@@ -157,7 +157,7 @@
             font-size: 1.2rem;
             color: #888;
             margin-top: 15px;
-            font-style: italic; /* Thoda stylish dikhane ke liye */
+            font-style: italic; 
         }
 
         .reveal-text.visible {
@@ -171,21 +171,19 @@
     <section class="hero">
         <div class="glow"></div>
         
-        <!-- Yahan text hata diya gaya hai aur kewal image hai -->
         <div class="brand-wrapper">
-            <img src="ree.png" alt="ree Symbol" class="brand-logo">
+            <img src="https://i.ibb.co/zHTsdx0V/Dofoto-20260430-133314752.png" alt="ree Symbol" class="brand-logo">
         </div>
         
         <p class="subtitle">Redefining the ordinary.</p>
         
         <div class="cta-container">
-            <button class="cta-btn" id="feedbackBtn">Feedback</button>
+            <button class="cta-btn" id="followBtn">Follow</button>
             <span class="click-count" id="clickCount">0</span>
         </div>
     </section>
 
     <section class="content-section">
-        <!-- Text ke niche right side me Ambuj Saga -->
         <div class="reveal-text">
             <h2>Welcome to the next generation of style and innovation. This is where your journey begins.</h2>
             <span class="signature">- Ambuj Saga</span>
@@ -222,9 +220,11 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         
-        const clickRef = ref(db, 'feedback_clicks');
+        // Retained the same database reference so old counts aren't lost
+        const clickRef = ref(db, 'feedback_clicks'); 
 
-        const feedbackBtn = document.getElementById('feedbackBtn');
+        // Updated variable names to match the new Follow button
+        const followBtn = document.getElementById('followBtn');
         const clickCountDisplay = document.getElementById('clickCount');
 
         onValue(clickRef, (snapshot) => {
@@ -232,14 +232,16 @@
             clickCountDisplay.innerText = data || 0; 
         });
 
-        feedbackBtn.addEventListener('click', () => {
+        // Event listener is strictly for incrementing the count (no unfollow option)
+        followBtn.addEventListener('click', () => {
             runTransaction(clickRef, (currentCount) => {
                 return (currentCount || 0) + 1;
             });
             
-            feedbackBtn.style.transform = "scale(0.95)";
+            // Button animation effect
+            followBtn.style.transform = "scale(0.95)";
             setTimeout(() => {
-                feedbackBtn.style.transform = "scale(1)";
+                followBtn.style.transform = "scale(1)";
             }, 100);
         });
     </script>
