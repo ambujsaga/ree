@@ -135,9 +135,9 @@
 
         /* Scroll Reveal Section */
         .content-section {
-            padding: 100px 20px;
+            padding: 100px 20px 20px;
             text-align: center;
-            min-height: 100vh;
+            min-height: 80vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -185,6 +185,77 @@
             0% { transform: translate(0, 0) scale(1); opacity: 1; }
             100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
         }
+
+        /* --- NAYA SECTION CSS: "Also from" UI --- */
+        .also-from-section {
+            padding: 40px 20px 80px;
+            max-width: 600px;
+            margin: 0 auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .also-from-title {
+            font-size: 1rem;
+            color: #888;
+            margin-bottom: 25px;
+            text-align: left;
+            font-weight: normal;
+        }
+
+        .also-from-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: nowrap;
+            gap: 15px;
+        }
+
+        .also-from-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #fff;
+            transition: transform 0.3s ease;
+            flex: 1;
+        }
+
+        .also-from-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .icon-circle {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: rgba(138, 43, 226, 0.05);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .also-from-item:hover .icon-circle {
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
+            border-color: rgba(138, 43, 226, 0.8);
+            background: rgba(138, 43, 226, 0.15);
+        }
+
+        /* Agar tum apni koi PNG image lagana chaho Thejaya ke liye toh yaha fit ho jayegi */
+        .icon-circle img {
+            width: 32px; 
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .also-from-item span {
+            font-size: 0.85rem;
+            color: #aaa;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -211,6 +282,40 @@
         </div>
     </section>
 
+    <section class="also-from-section">
+        <h3 class="also-from-title">Also from us</h3>
+        <div class="also-from-grid">
+            
+            <a href="https://thejaya.com" target="_blank" class="also-from-item">
+                <div class="icon-circle">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3256/3256013.png" alt="Thejaya" style="filter: invert(1) opacity(0.8);">
+                </div>
+                <span>Thejaya</span>
+            </a>
+            
+            <a href="#" target="_blank" class="also-from-item">
+                <div class="icon-circle">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2950/2950595.png" alt="Saga Links" style="filter: invert(1) opacity(0.8);">
+                </div>
+                <span>Saga Links</span>
+            </a>
+
+            <a href="#" target="_blank" class="also-from-item">
+                <div class="icon-circle">
+                    <img src="https://cdn-icons-png.flaticon.com/512/10097/10097205.png" alt="Projects" style="filter: invert(1) opacity(0.8);">
+                </div>
+                <span>Projects</span>
+            </a>
+
+            <a href="#" target="_blank" class="also-from-item">
+                <div class="icon-circle">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1183/1183672.png" alt="More" style="filter: invert(1) opacity(0.8);">
+                </div>
+                <span>More</span>
+            </a>
+
+        </div>
+    </section>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const observer = new IntersectionObserver((entries) => {
