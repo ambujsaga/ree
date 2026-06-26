@@ -273,7 +273,7 @@
         <p class="subtitle">Redefining the ordinary.</p>
         
         <div class="cta-container">
-            <button class="cta-btn" id="followBtn">Follow</button>
+            <button class="cta-btn" id="followBtn">Vote</button>
             <span class="click-count" id="clickCount">0</span>
         </div>
     </section>
@@ -353,9 +353,9 @@
         const followBtn = document.getElementById('followBtn');
         const clickCountDisplay = document.getElementById('clickCount');
 
-        // Check LocalStorage on page load to see if user has already followed
+        // Check LocalStorage on page load to see if user has already voted
         if (localStorage.getItem('ree_followed') === 'true') {
-            followBtn.innerText = 'Followed';
+            followBtn.innerText = 'Voted';
             followBtn.disabled = true;
         }
 
@@ -365,12 +365,12 @@
         });
 
         followBtn.addEventListener('click', (e) => {
-            // Prevent multiple clicks if already followed
+            // Prevent multiple clicks if already voted
             if (localStorage.getItem('ree_followed') === 'true') return;
 
-            // Mark as followed in local storage
+            // Mark as voted in local storage
             localStorage.setItem('ree_followed', 'true');
-            followBtn.innerText = 'Followed';
+            followBtn.innerText = 'Voted';
             followBtn.disabled = true;
 
             // --- Boom Animation Logic ---
