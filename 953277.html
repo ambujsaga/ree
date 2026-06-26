@@ -3,9 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/jpeg" href="logo.jpg?v=1.1">
-    <link rel="apple-touch-icon" sizes="192x192" href="logo.jpg?v=1.1">
-    <link rel="manifest" href="manifest.json">
     <title>ree. | The Future</title>
     <style>
         * {
@@ -49,7 +46,7 @@
             100% { transform: translate(50px, 50px); }
         }
 
-        /* Brand Wrapper */
+        /* Brand Wrapper (Only Image Now) */
         .brand-wrapper {
             display: flex;
             align-items: center;
@@ -60,7 +57,7 @@
             animation: fadeInUp 1s forwards 0.5s ease-out;
         }
 
-        /* Brand Symbol Image Styling */
+        /* Brand Symbol Image Styling (Resized) */
         .brand-logo {
             height: 150px; 
             width: auto;
@@ -110,16 +107,10 @@
             overflow: hidden;
         }
 
-        .cta-btn:hover:not(:disabled) {
+        .cta-btn:hover {
             background: #8a2be2;
             box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
             transform: scale(1.05);
-        }
-
-        .cta-btn:disabled {
-            background: #8a2be2;
-            cursor: not-allowed;
-            opacity: 0.8;
         }
 
         /* Realtime Count Badge */
@@ -138,14 +129,15 @@
 
         /* Scroll Reveal Section */
         .content-section {
-            padding: 100px 20px 20px;
+            padding: 100px 20px;
             text-align: center;
-            min-height: 80vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
+        /* Note text container */
         .reveal-text {
             max-width: 800px;
             opacity: 0;
@@ -172,93 +164,6 @@
             opacity: 1;
             transform: translateY(0);
         }
-
-        /* Boom Animation Particles CSS */
-        .particle {
-            position: fixed;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            animation: explode 0.8s ease-out forwards;
-        }
-
-        @keyframes explode {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
-        }
-
-        /* --- NAYA SECTION CSS: "Also from" UI --- */
-        .also-from-section {
-            padding: 40px 20px 80px;
-            max-width: 600px;
-            margin: 0 auto;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .also-from-title {
-            font-size: 1rem;
-            color: #888;
-            margin-bottom: 25px;
-            text-align: left;
-            font-weight: normal;
-        }
-
-        .also-from-grid {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: nowrap;
-            gap: 15px;
-        }
-
-        .also-from-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: #fff;
-            transition: transform 0.3s ease;
-            flex: 1;
-        }
-
-        .also-from-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .icon-circle {
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            background: rgba(138, 43, 226, 0.05);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 12px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .also-from-item:hover .icon-circle {
-            box-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
-            border-color: rgba(138, 43, 226, 0.8);
-            background: rgba(138, 43, 226, 0.15);
-        }
-
-        /* Agar tum apni koi PNG image lagana chaho Thejaya ke liye toh yaha fit ho jayegi */
-        .icon-circle img {
-            width: 32px; 
-            height: 32px;
-            object-fit: contain;
-        }
-
-        .also-from-item span {
-            font-size: 0.85rem;
-            color: #aaa;
-            text-align: center;
-        }
     </style>
 </head>
 <body>
@@ -280,45 +185,11 @@
 
     <section class="content-section">
         <div class="reveal-text">
-            <h2>Welcome to the next generation of style and innovation. This is where my journey begins.</h2>
+            <h2>Welcome to the next generation of style and innovation. This is where your journey begins.</h2>
             <span class="signature">- Ambuj Saga</span>
         </div>
     </section>
 
-    <section class="also-from-section">
-        <h3 class="also-from-title">Also from us</h3>
-        <div class="also-from-grid">
-            
-            <a href="https://thejaya.vercel.app" target="_blank" class="also-from-item">
-                <div class="icon-circle">
-                    <img src="thejaya.jpg" alt="Thejaya" style="filter: invert(1) opacity(0.8);">
-                </div>
-                <span>Thejaya</span>
-            </a>
-            
-            <a href="#" target="_blank" class="also-from-item">
-                <div class="icon-circle">
-                    <img src="soon.jpg" alt="Saga Links" style="filter: invert(1) opacity(0.8);">
-                </div>
-                <span>---</span>
-            </a>
-
-            <a href="#" target="_blank" class="also-from-item">
-                <div class="icon-circle">
-                    <img src="soon.jpg" alt="Projects" style="filter: invert(1) opacity(0.8);">
-                </div>
-                <span>---</span>
-            </a>
-
-            <a href="#" target="_blank" class="also-from-item">
-                <div class="icon-circle">
-                    <img src="soon.jpg" alt="More" style="filter: invert(1) opacity(0.8);">
-                </div>
-                <span>---</span>
-            </a>
-
-        </div>
-    </section>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const observer = new IntersectionObserver((entries) => {
@@ -349,58 +220,20 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         
+        // Retained the same database reference so old counts aren't lost
         const clickRef = ref(db, 'feedback_clicks'); 
+
+        // Updated variable names to match the new Follow button
         const followBtn = document.getElementById('followBtn');
         const clickCountDisplay = document.getElementById('clickCount');
-
-        // Check LocalStorage on page load to see if user has already followed
-        if (localStorage.getItem('ree_followed') === 'true') {
-            followBtn.innerText = 'Followed';
-            followBtn.disabled = true;
-        }
 
         onValue(clickRef, (snapshot) => {
             const data = snapshot.val();
             clickCountDisplay.innerText = data || 0; 
         });
 
-        followBtn.addEventListener('click', (e) => {
-            // Prevent multiple clicks if already followed
-            if (localStorage.getItem('ree_followed') === 'true') return;
-
-            // Mark as followed in local storage
-            localStorage.setItem('ree_followed', 'true');
-            followBtn.innerText = 'Followed';
-            followBtn.disabled = true;
-
-            // --- Boom Animation Logic ---
-            for (let i = 0; i < 35; i++) {
-                let particle = document.createElement('div');
-                particle.className = 'particle';
-                document.body.appendChild(particle);
-
-                // Math for explosion spread
-                let angle = Math.random() * 2 * Math.PI;
-                let distance = Math.random() * 120 + 30; 
-                let tx = Math.cos(angle) * distance;
-                let ty = Math.sin(angle) * distance;
-
-                particle.style.left = e.clientX + 'px';
-                particle.style.top = e.clientY + 'px';
-                particle.style.setProperty('--tx', `${tx}px`);
-                particle.style.setProperty('--ty', `${ty}px`);
-
-                // Random colors for particles (Purple theme)
-                const colors = ['#8a2be2', '#b82be2', '#5c2be2', '#ffffff'];
-                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-
-                setTimeout(() => {
-                    particle.remove();
-                }, 800);
-            }
-            // -----------------------------
-
-            // Firebase Transaction
+        // Event listener is strictly for incrementing the count (no unfollow option)
+        followBtn.addEventListener('click', () => {
             runTransaction(clickRef, (currentCount) => {
                 return (currentCount || 0) + 1;
             });
