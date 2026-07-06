@@ -110,13 +110,47 @@
         const confirmDeleteBtn = document.getElementById('confirmDelete');
         let currentDeleteKey = null;
 
+        // --- Notification Logic ---
+        let isFirstLoad = true;
+        const notificationSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2357/2357-84.wav'); // Messenger/WhatsApp style sound
+
+        if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+            Notification.requestPermission();
+        }
+
         const submissionsRef = ref(db, 'user_submissions');
         onValue(submissionsRef, (snapshot) => {
             const data = snapshot.val();
             dataContainer.innerHTML = ''; 
 
             if (data) {
-                Object.keys(data).reverse().forEach(key => {
+                const keys = Object.keys(data).reverse();
+                
+                // Realtime check: Agar pehla load khatam ho chuka hai aur naya data aaya hai
+                if (!isFirstLoad && keys.length > 0) {
+                    const latestKey = keys[0]; // Kyonki reverse kiya hai, to index 0 par latest hoga
+                    const latestUser = data[latestKey];
+                    
+                    // Trigger Chrome Notification
+                    if (Notification.permission === "granted") {
+                        const notification = new Notification(`New Submission from ${latestUser.name}`, {
+                            body: latestUser.message || "You received a new submission!",
+                            icon: "https://cdn-icons-png.flaticon.com/512/3249/3249910.png" // Dashboard/Message icon
+                        });
+                        
+                        notification.onclick = () => {
+                            window.focus();
+                        };
+                    }
+                    
+                    // Play Whatsapp/Messenger sound
+                    notificationSound.play().catch(e => console.log("Sound play restriction:", e));
+                }
+
+                // First loading track boolean ko off karne ke liye
+                isFirstLoad = false;
+
+                keys.forEach(key => {
                     const user = data[key];
                     
                     const card = document.createElement('div');
@@ -124,7 +158,6 @@
                     
                     let phoneHtml = user.phone ? `<p class="extra-info"><strong>Phone:</strong> ${user.phone}</p>` : '';
                     let addressHtml = user.address ? `<p class="extra-info"><strong>Address:</strong> ${user.address}</p>` : '';
-                    // New WhatsApp field display logic
                     let waHtml = (user.whatsapp && user.whatsapp !== "Not Provided") ? `<p class="extra-info"><strong>WhatsApp:</strong> <span class="wa-info">${user.whatsapp}</span></p>` : '';
 
                     card.innerHTML = `
@@ -149,6 +182,7 @@
                     });
                 });
             } else {
+                isFirstLoad = false; // Agar data nahi hai tab bhi first load false set karein
                 dataContainer.innerHTML = '<div class="no-data">No submissions yet. Be the first to join!</div>';
             }
         });
