@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ree. | Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #0a0a0a; color: #ffffff; padding: 40px; min-height: 100vh; position: relative; }
+        
+        .glow {
+            position: fixed; top: 50%; left: 50%; width: 400px; height: 400px; background: rgba(138, 43, 226, 0.2);
+            filter: blur(120px); border-radius: 50%; transform: translate(-50%, -50%); z-index: 0; pointer-events: none;
+        }
+
+        h1 { text-align: center; font-size: 2.5rem; margin-bottom: 40px; z-index: 2; position: relative; }
+        h1 span { color: #8a2be2; }
+
+        .data-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px; z-index: 2; position: relative; max-width: 1200px; margin: 0 auto;
+        }
+
+        .user-card {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 15px; padding: 25px; transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex; flex-direction: column;
+        }
+        .user-card:hover {
+            transform: translateY(-5px); box-shadow: 0 10px 20px rgba(138, 43, 226, 0.2); border-color: #8a2be2;
+        }
+
+        .user-card h3 { color: #fff; margin-bottom: 5px; font-size: 1.4rem; }
+        .user-card .email { color: #8a2be2; font-size: 0.9rem; margin-bottom: 10px; display: block; }
+        
+        .user-card .extra-info { font-size: 0.9rem; color: #ccc; margin-bottom: 5px; }
+        .user-card .extra-info strong { color: #fff; }
+        .user-card .wa-info { color: #25D366; font-weight: bold; }
+
+        .user-card .message { color: #aaa; font-size: 1rem; line-height: 1.5; margin-top: 10px; margin-bottom: 15px; flex-grow: 1; }
+        
+        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; margin-top: 10px; }
+        .user-card .time { color: #555; font-size: 0.8rem; }
+        
+        .delete-btn { background: rgba(255, 0, 0, 0.15); color: #ff4d4d; border: 1px solid rgba(255, 0, 0, 0.4); padding: 6px 12px; border-radius: 6px; cursor: pointer; transition: 0.3s; font-size: 0.85rem; }
+        .delete-btn:hover { background: #ff4d4d; color: #fff; box-shadow: 0 0 10px rgba(255, 0, 0, 0.4); }
+
+        .no-data { text-align: center; color: #888; grid-column: 1 / -1; font-size: 1.2rem; }
+
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 9999;
+            justify-content: center; align-items: center;
+        }
+        .modal-box {
+            background: #111; padding: 30px; border-radius: 15px; border: 1px solid #8a2be2;
+            text-align: center; max-width: 400px; width: 90%; box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
+            transform: scale(0.9); transition: transform 0.3s ease;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-overlay.active .modal-box { transform: scale(1); }
+        .modal-box h2 { margin-bottom: 15px; font-size: 1.5rem; color: #ff4d4d; }
+        .modal-box p { margin-bottom: 25px; color: #ccc; font-size: 1rem; }
+        .modal-buttons { display: flex; justify-content: center; gap: 15px; }
+        .modal-btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; font-size: 1rem; }
+        .btn-cancel { background: transparent; color: #fff; border: 1px solid #555; }
+        .btn-cancel:hover { background: #333; }
+        .btn-confirm { background: #ff4d4d; color: white; }
+        .btn-confirm:hover { background: #ff1a1a; box-shadow: 0 0 15px rgba(255, 0, 0, 0.5); }
+    </style>
+</head>
+<body>
+    <div class="glow"></div>
+
+    <h1>User <span>Submissions</span></h1>
+    
+    <div class="data-grid" id="dataContainer">
+        <div class="no-data">Loading data...</div>
+    </div>
+
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-box">
+            <h2>Delete Data?</h2>
+            <p>Are you sure you want to permanently delete this user's data? This action cannot be undone.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn btn-cancel" id="cancelDelete">Cancel</button>
+                <button class="modal-btn btn-confirm" id="confirmDelete">Yes, Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCOdF10p3WVV5XDE8jnzttzw3VnZJU-bXU",
+            authDomain: "game-b37ee.firebaseapp.com",
+            databaseURL: "https://game-b37ee-default-rtdb.firebaseio.com",
+            projectId: "game-b37ee",
+            storageBucket: "game-b37ee.firebasestorage.app"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const dataContainer = document.getElementById('dataContainer');
+
+        const deleteModal = document.getElementById('deleteModal');
+        const cancelDeleteBtn = document.getElementById('cancelDelete');
+        const confirmDeleteBtn = document.getElementById('confirmDelete');
+        let currentDeleteKey = null;
+
+        const submissionsRef = ref(db, 'user_submissions');
+        onValue(submissionsRef, (snapshot) => {
+            const data = snapshot.val();
+            dataContainer.innerHTML = ''; 
+
+            if (data) {
+                Object.keys(data).reverse().forEach(key => {
+                    const user = data[key];
+                    
+                    const card = document.createElement('div');
+                    card.className = 'user-card';
+                    
+                    let phoneHtml = user.phone ? `<p class="extra-info"><strong>Phone:</strong> ${user.phone}</p>` : '';
+                    let addressHtml = user.address ? `<p class="extra-info"><strong>Address:</strong> ${user.address}</p>` : '';
+                    // New WhatsApp field display logic
+                    let waHtml = (user.whatsapp && user.whatsapp !== "Not Provided") ? `<p class="extra-info"><strong>WhatsApp:</strong> <span class="wa-info">${user.whatsapp}</span></p>` : '';
+
+                    card.innerHTML = `
+                        <h3>${user.name}</h3>
+                        <span class="email">${user.email}</span>
+                        ${phoneHtml}
+                        ${waHtml}
+                        ${addressHtml}
+                        <p class="message">${user.message}</p>
+                        <div class="card-footer">
+                            <div class="time">${user.timestamp}</div>
+                            <button class="delete-btn" data-key="${key}">Delete</button>
+                        </div>
+                    `;
+                    dataContainer.appendChild(card);
+                });
+
+                document.querySelectorAll('.delete-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        currentDeleteKey = e.target.getAttribute('data-key');
+                        deleteModal.classList.add('active');
+                    });
+                });
+            } else {
+                dataContainer.innerHTML = '<div class="no-data">No submissions yet. Be the first to join!</div>';
+            }
+        });
+
+        cancelDeleteBtn.addEventListener('click', () => {
+            deleteModal.classList.remove('active');
+            currentDeleteKey = null;
+        });
+
+        confirmDeleteBtn.addEventListener('click', () => {
+            if (currentDeleteKey) {
+                const itemRef = ref(db, 'user_submissions/' + currentDeleteKey);
+                remove(itemRef).then(() => {
+                    deleteModal.classList.remove('active');
+                    currentDeleteKey = null;
+                }).catch((error) => {
+                    console.error("Error removing data: ", error);
+                    alert("Error deleting data!");
+                });
+            }
+        });
+    </script>
+</body>
+</html>
