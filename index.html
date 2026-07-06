@@ -215,12 +215,90 @@
             100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
         }
 
+        /* --- NAYA SECTION CSS: Services UI --- */
+        .services-section {
+            padding: 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .services-intro {
+            font-size: 1.2rem;
+            color: #ffffff;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .services-desc {
+            font-size: 1rem;
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            text-align: justify;
+        }
+
+        .services-title {
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 25px;
+            text-align: center;
+            position: relative;
+        }
+
+        .services-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: #8a2be2;
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        .service-list {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .service-item {
+            background: rgba(138, 43, 226, 0.03);
+            border: 1px solid rgba(138, 43, 226, 0.15);
+            padding: 20px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .service-item:hover {
+            border-color: rgba(138, 43, 226, 0.5);
+            background: rgba(138, 43, 226, 0.08);
+            transform: translateY(-3px);
+        }
+
+        .service-item strong {
+            display: block;
+            font-size: 1.15rem;
+            color: #8a2be2;
+            margin-bottom: 8px;
+        }
+
+        .service-item span {
+            font-size: 0.95rem;
+            color: #ddd;
+            line-height: 1.5;
+        }
+
         /* --- NAYA SECTION CSS: "Also from" UI --- */
         .also-from-section {
             padding: 40px 20px 80px;
             max-width: 600px;
             margin: 0 auto;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
         }
 
         .also-from-title {
@@ -317,6 +395,35 @@
         </div>
     </section>
 
+    <section class="services-section">
+        <p class="services-intro">It's a software/website/application makers platform.</p>
+        <p class="services-desc">At Ree, we don't just write code or create designs; we transform your vision into digital realities. As a premier IT and creative agency, we deeply understand every intricate requirement of our clients to deliver tailored software development, high-end mobile applications, and eye-catching logo designs. Our ultimate mission is to craft a distinct digital identity for your brand that stands out flawlessly in today's competitive market.</p>
+        
+        <h2 class="services-title">Key Services</h2>
+        
+        <div class="service-list">
+            <div class="service-item">
+                <strong>Custom Website Development:</strong>
+                <span>Fast, responsive, and highly user-friendly web designs that captivate your audience at first glance.</span>
+            </div>
+            
+            <div class="service-item">
+                <strong>Next-Gen Applications:</strong>
+                <span>Super-smooth, feature-rich Android and iOS apps designed to bring your business straight to everyone's fingertips.</span>
+            </div>
+            
+            <div class="service-item">
+                <strong>Enterprise Software Solutions:</strong>
+                <span>Advanced, scalable, and secure software tools tailored to automate and streamline your workflow.</span>
+            </div>
+            
+            <div class="service-item">
+                <strong>Iconic Logo & Brand Design:</strong>
+                <span>Memorable logos that represent more than just a design—they embody your brand’s core identity and trust.</span>
+            </div>
+        </div>
+    </section>
+
     <section class="also-from-section">
         <h3 class="also-from-title">Also from us</h3>
         <div class="also-from-grid">
@@ -339,7 +446,7 @@
                 <div class="icon-circle">
                     <img src="soon.jpg" alt="Projects" style="filter: invert(1) opacity(0.8);">
                 </div>
-                <span>--</span>
+                <span>---</span>
             </a>
 
             <a href="#" target="_blank" class="also-from-item">
