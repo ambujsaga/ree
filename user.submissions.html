@@ -74,7 +74,10 @@
 </head>
 <body>
     <div class="glow"></div>
-
+<!-- Back Button Code -->
+<button onclick="window.location.href='index.html'" style="padding: 10px 20px; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold;">
+  🔙 Back to Home
+</button>
     <h1>User <span>Submissions</span></h1>
     
     <div class="data-grid" id="dataContainer">
@@ -208,15 +211,5 @@
             }
         });
     </script>
-    <script>
-  // Button ko uske ID se select karna
-  const button = document.getElementById("backBtn");
-
-  // Click karne par index.html par bhejna
-  button.addEventListener("click", function() {
-    window.location.href = "index.html";
-  });
-</script>
-
 </body>
 </html>
