@@ -1,6 +1,6 @@
 {
   "name": "ree",
-  "short_name": "ree",
+  "short_name": "user submissions",
   "icons": [
     {
       "src": "logo.jpg?v=1.1",
@@ -15,7 +15,7 @@
       "purpose": "any"
     }
   ],
-  "start_url": "/index.html",
+  "start_url": "/user.submissions.html",
   "display": "standalone",
   "background_color": "#FFFFFF",
   "theme_color": "#000"
