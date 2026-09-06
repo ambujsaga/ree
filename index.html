@@ -995,11 +995,413 @@
             color: var(--text-muted);
             line-height: 1.6;
         }
+
+        /* ============================================================
+           NEW FEATURES BELOW — added without editing anything above.
+           1) Sketch Your Idea canvas
+           2) Cinematic scroll video
+           3) View in Your Room (AR)
+           4) Live Aesthetic Switcher
+           5) Interactive Project Estimator
+           ============================================================ */
+
+        /* ---------- 1) SKETCH YOUR IDEA ---------- */
+        .sketch-section {
+            padding: 80px 20px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .sketch-wrap {
+            margin-top: 36px;
+            border: 1px solid var(--panel-border);
+            border-radius: 18px;
+            background: var(--panel);
+            overflow: hidden;
+        }
+
+        .sketch-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--panel-border);
+            flex-wrap: wrap;
+        }
+
+        .sketch-colors { display: flex; gap: 8px; }
+
+        .sketch-color {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            padding: 0;
+            transition: transform 0.15s ease, border-color 0.15s ease;
+        }
+
+        .sketch-color.active {
+            border-color: var(--accent-cyan);
+            transform: scale(1.15);
+        }
+
+        .sketch-actions { display: flex; gap: 10px; }
+
+        .sketch-btn {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            font-family: var(--font-body);
+            color: var(--text-muted);
+            background: transparent;
+            border: 1px solid var(--panel-border);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .sketch-btn:hover { color: var(--text); border-color: var(--accent-light); }
+
+        .sketch-canvas {
+            display: block;
+            width: 100%;
+            height: 340px;
+            touch-action: none;
+            cursor: crosshair;
+            background-color: #05060a;
+            background-image:
+                linear-gradient(rgba(159, 176, 255, 0.14) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(159, 176, 255, 0.14) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .sketch-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 16px;
+            flex-wrap: wrap;
+        }
+
+        .sketch-hint {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            max-width: 340px;
+        }
+
+        .sketch-send-btn { padding: 12px 26px; font-size: 0.95rem; }
+
+        @media (max-width: 640px) {
+            .sketch-canvas { height: 280px; }
+            .sketch-footer { flex-direction: column; align-items: stretch; text-align: center; }
+        }
+
+        /* ---------- 2) CINEMATIC SCROLL SHOWCASE ---------- */
+        .cinematic-section {
+            position: relative;
+            height: 220vh;
+        }
+
+        .cinematic-frame {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .cinematic-video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cinematic-section.cinematic-fallback .cinematic-video { display: none; }
+
+        .cinematic-section.cinematic-fallback .cinematic-frame {
+            background: linear-gradient(160deg, var(--bg) 0%, var(--bg-glow) 45%, var(--accent-deep) 130%);
+        }
+
+        .cinematic-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(5, 6, 10, 0.9), rgba(5, 6, 10, 0.15) 55%, rgba(5, 6, 10, 0.55));
+            pointer-events: none;
+        }
+
+        .cinematic-copy {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 0 24px 70px;
+            max-width: 560px;
+        }
+
+        .cinematic-copy h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .cinematic-copy p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        @media (max-width: 640px) {
+            .cinematic-section { height: 180vh; }
+            .cinematic-copy h2 { font-size: 1.5rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .cinematic-section { height: auto; }
+            .cinematic-frame { position: relative; height: 60vh; }
+        }
+
+        /* ---------- 3) VIEW IN YOUR ROOM (AR) ---------- */
+        .ar-section {
+            padding: 80px 20px 20px;
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .ar-stage {
+            margin-top: 36px;
+            border: 1px solid var(--panel-border);
+            border-radius: 18px;
+            background: var(--panel);
+            padding: 24px;
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 360px;
+            background: radial-gradient(circle at 50% 40%, rgba(109, 91, 255, 0.15), transparent 70%);
+            border-radius: 14px;
+            --poster-color: transparent;
+        }
+
+        .ar-btn { margin-top: 18px; }
+
+        .ar-hint {
+            margin-top: 16px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 640px) {
+            model-viewer { height: 300px; }
+        }
+
+        /* ---------- 4) LIVE AESTHETIC SWITCHER ---------- */
+        :root[data-theme="trash-polka"] {
+            --bg: #000000;
+            --bg-glow: #0a0a0a;
+            --panel: rgba(255, 255, 255, 0.05);
+            --panel-border: rgba(255, 255, 255, 0.35);
+            --accent: #ff003c;
+            --accent-deep: #8f0022;
+            --accent-light: #ffffff;
+            --accent-cyan: #ff003c;
+            --accent-soft: rgba(255, 0, 60, 0.15);
+            --text: #ffffff;
+            --text-muted: #a8a8a8;
+        }
+
+        :root[data-theme="sunset"] {
+            --bg: #2a1420;
+            --bg-glow: #3d1f2a;
+            --panel: rgba(255, 214, 170, 0.08);
+            --panel-border: rgba(255, 183, 140, 0.35);
+            --accent: #ff8a5b;
+            --accent-deep: #d9552c;
+            --accent-light: #ffd8a8;
+            --accent-cyan: #ffb37a;
+            --accent-soft: rgba(255, 138, 91, 0.18);
+            --text: #fff3e6;
+            --text-muted: #d8b8a8;
+        }
+
+        .aesthetic-switcher {
+            position: fixed;
+            right: 16px;
+            bottom: 16px;
+            z-index: 9997;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 30px;
+            background: rgba(10, 11, 20, 0.7);
+            border: 1px solid var(--panel-border);
+            backdrop-filter: blur(10px);
+        }
+
+        .aesthetic-label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            letter-spacing: 0.02em;
+        }
+
+        .aesthetic-options { display: flex; gap: 8px; }
+
+        .aesthetic-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            padding: 0;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .aesthetic-dot[data-theme="default"] { background: linear-gradient(135deg, #6d5bff, #22d3ee); }
+        .aesthetic-dot[data-theme="trash-polka"] { background: linear-gradient(135deg, #000, #ff003c); }
+        .aesthetic-dot[data-theme="sunset"] { background: linear-gradient(135deg, #ff8a5b, #ffd8a8); }
+
+        .aesthetic-dot.active { border-color: #fff; transform: scale(1.2); }
+
+        @media (max-width: 500px) {
+            .aesthetic-label { display: none; }
+            .aesthetic-switcher { right: 12px; bottom: 12px; }
+        }
+
+        /* ---------- 5) INTERACTIVE PROJECT ESTIMATOR ---------- */
+        .estimator-section {
+            padding: 80px 20px 20px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .estimator-box {
+            margin-top: 36px;
+            border: 1px solid var(--panel-border);
+            border-radius: 18px;
+            background: var(--panel);
+            padding: 28px;
+        }
+
+        .estimator-group { margin-bottom: 24px; }
+
+        .estimator-group-label {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .estimator-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .estimator-pill {
+            padding: 10px 20px;
+            border-radius: 24px;
+            border: 1px solid var(--panel-border);
+            background: transparent;
+            color: var(--text-muted);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .estimator-pill.active {
+            color: #fff;
+            background: linear-gradient(180deg, var(--accent), var(--accent-deep));
+            border-color: var(--accent-light);
+        }
+
+        .estimator-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        @media (max-width: 500px) {
+            .estimator-features { grid-template-columns: 1fr; }
+        }
+
+        .estimator-feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .estimator-feature input {
+            accent-color: var(--accent);
+            width: 16px;
+            height: 16px;
+        }
+
+        .estimator-result {
+            display: flex;
+            gap: 20px;
+            padding: 20px 0;
+            border-top: 1px solid var(--panel-border);
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .estimator-result-item { flex: 1; min-width: 160px; }
+
+        .estimator-result-label {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .estimator-result-value {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .estimator-cta {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-top: 6px;
+        }
+
+        .estimator-disclaimer {
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 14px;
+        }
     </style>
+
+    <!-- Added for "View in Your Room" AR feature — loads Google's model-viewer web component -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 </head>
 <body>
 
     <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- NEW: Live Aesthetic Switcher — recolors the whole site live -->
+    <div class="aesthetic-switcher" id="aestheticSwitcher">
+        <span class="aesthetic-label">Mood</span>
+        <div class="aesthetic-options">
+            <button class="aesthetic-dot active" data-theme="default" aria-label="ree default theme" title="ree (default)" type="button"></button>
+            <button class="aesthetic-dot" data-theme="trash-polka" aria-label="High-Contrast Trash Polka theme" title="Trash Polka" type="button"></button>
+            <button class="aesthetic-dot" data-theme="sunset" aria-label="Soft 3D HDR Sunset theme" title="HDR Sunset" type="button"></button>
+        </div>
+    </div>
 
     <section class="hero">
         <div class="glow"></div>
@@ -1039,6 +1441,34 @@
             <span class="click-count" id="clickCount">0</span>
         </div>
 
+    </section>
+
+    <!-- NEW: Sketch Your Idea — interactive touch-enabled whiteboard -->
+    <section class="sketch-section fade-up" id="sketch">
+        <h2 class="section-label">Sketch Your Idea</h2>
+        <p class="about-desc">Got a rough layout in your head? Draw it right here — no design tool needed — then send it to us with your message.</p>
+
+        <div class="sketch-wrap">
+            <div class="sketch-toolbar">
+                <div class="sketch-colors" id="sketchColors">
+                    <button class="sketch-color active" data-color="#f2f2f8" style="background:#f2f2f8" aria-label="White" type="button"></button>
+                    <button class="sketch-color" data-color="#6d5bff" style="background:#6d5bff" aria-label="Purple" type="button"></button>
+                    <button class="sketch-color" data-color="#22d3ee" style="background:#22d3ee" aria-label="Cyan" type="button"></button>
+                    <button class="sketch-color" data-color="#ff5b7f" style="background:#ff5b7f" aria-label="Pink" type="button"></button>
+                </div>
+                <div class="sketch-actions">
+                    <button class="sketch-btn" id="sketchUndo" type="button">Undo</button>
+                    <button class="sketch-btn" id="sketchClear" type="button">Clear</button>
+                </div>
+            </div>
+
+            <canvas class="sketch-canvas" id="sketchCanvas"></canvas>
+
+            <div class="sketch-footer">
+                <span class="sketch-hint">Draw with your finger or mouse — pages, boxes, buttons, whatever's in your head.</span>
+                <button class="cta-btn sketch-send-btn" id="sketchSend" type="button">Send This Sketch</button>
+            </div>
+        </div>
     </section>
 
     <section class="content-section">
@@ -1125,6 +1555,44 @@
         </div>
     </section>
 
+    <!-- NEW: View in Your Room — WebXR / AR preview -->
+    <!-- EDIT ME: replace ree-logo.glb / ree-logo.usdz with your real 3D model files for full AR placement -->
+    <section class="ar-section fade-up" id="ar">
+        <h2 class="services-title">View It In Your Room</h2>
+        <p class="services-sub">See the ree mark at real-world scale, right where you're sitting — point your phone and place it.</p>
+
+        <div class="ar-stage">
+            <model-viewer
+                id="arViewer"
+                src="ree-logo.glb"
+                ios-src="ree-logo.usdz"
+                alt="ree 3D logo"
+                ar
+                ar-modes="webxr scene-viewer quick-look"
+                camera-controls
+                auto-rotate
+                shadow-intensity="1"
+                poster="IMG_20260707_090043.png"
+                exposure="0.9">
+                <button slot="ar-button" class="cta-btn ar-btn" id="arBtn" type="button">View in Your Room</button>
+            </model-viewer>
+            <p class="ar-hint" id="arHint">Works on most modern phones — tap the button, allow camera access, then tap your floor to place it.</p>
+        </div>
+    </section>
+
+    <!-- NEW: Cinematic scroll-scrubbed video (Apple-style) -->
+    <!-- EDIT ME: replace cinematic-reel.mp4 with your DSLR-style brand reel (mp4, ideally under 15MB) -->
+    <section class="cinematic-section fade-up" id="cinematic">
+        <div class="cinematic-frame">
+            <video class="cinematic-video" id="cinematicVideo" src="cinematic-reel.mp4" muted playsinline preload="metadata" poster="IMG_20260707_090043.png"></video>
+            <div class="cinematic-overlay"></div>
+            <div class="cinematic-copy">
+                <h2>Every detail, considered.</h2>
+                <p>Scroll to see how we build — frame by frame, decision by decision.</p>
+            </div>
+        </div>
+    </section>
+
     <section class="process-section fade-up">
         <h2 class="services-title">How We Work</h2>
         <div class="process-steps">
@@ -1167,6 +1635,49 @@
                 <strong>Support after launch</strong>
                 <span>Our involvement doesn't end at delivery — we're reachable for help when you need it.</span>
             </div>
+        </div>
+    </section>
+
+    <!-- NEW: Interactive Project Estimator -->
+    <section class="estimator-section fade-up" id="estimator">
+        <h2 class="services-title">Get an Instant Estimate</h2>
+        <p class="services-sub">Pick what you need — we'll give you a rough cost and timeline right away. Final numbers depend on your exact scope.</p>
+
+        <div class="estimator-box">
+            <div class="estimator-group">
+                <span class="estimator-group-label">Project Type</span>
+                <div class="estimator-pills" id="estimatorType">
+                    <button class="estimator-pill active" data-type="website" data-base="15000" data-days="10" type="button">Website</button>
+                    <button class="estimator-pill" data-type="app" data-base="45000" data-days="28" type="button">Mobile App</button>
+                    <button class="estimator-pill" data-type="branding" data-base="8000" data-days="7" type="button">Branding</button>
+                </div>
+            </div>
+
+            <div class="estimator-group">
+                <span class="estimator-group-label">Features</span>
+                <div class="estimator-features" id="estimatorFeatures">
+                    <label class="estimator-feature"><input type="checkbox" value="4000" data-days="3"><span>Admin dashboard</span></label>
+                    <label class="estimator-feature"><input type="checkbox" value="6000" data-days="5"><span>Payments</span></label>
+                    <label class="estimator-feature"><input type="checkbox" value="3500" data-days="4"><span>User accounts &amp; login</span></label>
+                    <label class="estimator-feature"><input type="checkbox" value="2500" data-days="3"><span>Custom animations</span></label>
+                    <label class="estimator-feature"><input type="checkbox" value="3000" data-days="4"><span>CMS / editable content</span></label>
+                    <label class="estimator-feature"><input type="checkbox" value="5000" data-days="5"><span>Third-party integrations</span></label>
+                </div>
+            </div>
+
+            <div class="estimator-result">
+                <div class="estimator-result-item">
+                    <span class="estimator-result-label">Estimated Cost</span>
+                    <span class="estimator-result-value" id="estimatorCost">—</span>
+                </div>
+                <div class="estimator-result-item">
+                    <span class="estimator-result-label">Estimated Timeline</span>
+                    <span class="estimator-result-value" id="estimatorTime">—</span>
+                </div>
+            </div>
+
+            <a href="joinree.html" class="cta-btn estimator-cta" id="estimatorCta">Start This Project</a>
+            <p class="estimator-disclaimer">This is a ballpark figure, not a final quote — share your idea with us for exact pricing.</p>
         </div>
     </section>
 
@@ -1522,6 +2033,251 @@
 
             render();
             restartAutoplay();
+        })();
+
+        /* ============================================================
+           NEW FEATURE SCRIPTS BELOW — nothing above this line was edited.
+           ============================================================ */
+
+        // ---------- 1) SKETCH YOUR IDEA ----------
+        (function () {
+            const canvas = document.getElementById('sketchCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const colorButtons = document.querySelectorAll('.sketch-color');
+            const undoBtn = document.getElementById('sketchUndo');
+            const clearBtn = document.getElementById('sketchClear');
+            const sendBtn = document.getElementById('sketchSend');
+
+            let currentColor = '#f2f2f8';
+            let drawing = false;
+            let history = [];
+            const MAX_HISTORY = 15;
+
+            function resizeCanvas() {
+                const rect = canvas.getBoundingClientRect();
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.lineWidth = 3;
+            }
+
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            function pushHistory() {
+                try {
+                    history.push(canvas.toDataURL());
+                    if (history.length > MAX_HISTORY) history.shift();
+                } catch (e) { /* canvas not ready yet, ignore */ }
+            }
+
+            function getPos(e) {
+                const rect = canvas.getBoundingClientRect();
+                return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+            }
+
+            canvas.addEventListener('pointerdown', (e) => {
+                drawing = true;
+                pushHistory();
+                canvas.setPointerCapture(e.pointerId);
+                const pos = getPos(e);
+                ctx.strokeStyle = currentColor;
+                ctx.beginPath();
+                ctx.moveTo(pos.x, pos.y);
+            });
+
+            canvas.addEventListener('pointermove', (e) => {
+                if (!drawing) return;
+                const pos = getPos(e);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+            });
+
+            function endStroke(e) {
+                if (!drawing) return;
+                drawing = false;
+                try { canvas.releasePointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+            }
+
+            canvas.addEventListener('pointerup', endStroke);
+            canvas.addEventListener('pointerleave', endStroke);
+            canvas.addEventListener('pointercancel', endStroke);
+
+            colorButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    colorButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentColor = btn.dataset.color;
+                });
+            });
+
+            undoBtn.addEventListener('click', () => {
+                if (!history.length) return;
+                const dataUrl = history.pop();
+                const img = new Image();
+                img.onload = () => {
+                    const dpr = window.devicePixelRatio || 1;
+                    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+                    ctx.drawImage(img, 0, 0, canvas.width / dpr, canvas.height / dpr);
+                };
+                img.src = dataUrl;
+            });
+
+            clearBtn.addEventListener('click', () => {
+                pushHistory();
+                const dpr = window.devicePixelRatio || 1;
+                ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+            });
+
+            sendBtn.addEventListener('click', () => {
+                canvas.toBlob(async (blob) => {
+                    if (!blob) return;
+                    const file = new File([blob], 'ree-sketch.png', { type: 'image/png' });
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        try {
+                            await navigator.share({
+                                files: [file],
+                                title: 'My idea for ree',
+                                text: 'Here is a rough sketch of what I have in mind.'
+                            });
+                            return;
+                        } catch (err) { /* user cancelled share, fall through to download */ }
+                    }
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'ree-sketch.png';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    setTimeout(() => URL.revokeObjectURL(url), 2000);
+                    window.open('joinree.html', '_blank', 'noopener');
+                }, 'image/png');
+            });
+        })();
+
+        // ---------- 2) CINEMATIC SCROLL VIDEO ----------
+        (function () {
+            const section = document.getElementById('cinematic');
+            const video = document.getElementById('cinematicVideo');
+            if (!section || !video) return;
+
+            if (prefersReducedMotion) return; // keep it as a static frame, no scrubbing
+
+            let ready = false;
+            video.addEventListener('loadedmetadata', () => { ready = true; });
+            video.addEventListener('error', () => {
+                section.classList.add('cinematic-fallback');
+            });
+
+            function onScroll() {
+                const rect = section.getBoundingClientRect();
+                const total = rect.height - window.innerHeight;
+                if (total <= 0) return;
+                let progress = -rect.top / total;
+                progress = Math.min(Math.max(progress, 0), 1);
+                if (ready && video.duration) {
+                    video.currentTime = progress * video.duration;
+                }
+            }
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', onScroll);
+            onScroll();
+        })();
+
+        // ---------- 3) VIEW IN YOUR ROOM (AR) ----------
+        (function () {
+            const mv = document.getElementById('arViewer');
+            const hint = document.getElementById('arHint');
+            if (!mv || !hint) return;
+
+            if (!('customElements' in window) || !customElements.get) return;
+
+            customElements.whenDefined('model-viewer').then(() => {
+                mv.addEventListener('ar-status', (e) => {
+                    if (e.detail && e.detail.status === 'failed') {
+                        hint.textContent = "Couldn't start AR on this device — try a phone with a rear camera and a supported browser.";
+                    }
+                });
+            }).catch(() => {
+                hint.textContent = 'AR preview needs an internet connection to load — reload the page and try again.';
+            });
+        })();
+
+        // ---------- 4) LIVE AESTHETIC SWITCHER ----------
+        (function () {
+            const buttons = document.querySelectorAll('#aestheticSwitcher .aesthetic-dot');
+            if (!buttons.length) return;
+            const root = document.documentElement;
+
+            function applyTheme(theme) {
+                if (theme === 'default') {
+                    root.removeAttribute('data-theme');
+                } else {
+                    root.setAttribute('data-theme', theme);
+                }
+                buttons.forEach(b => b.classList.toggle('active', b.dataset.theme === theme));
+            }
+
+            let saved = 'default';
+            try {
+                saved = localStorage.getItem('ree_theme') || 'default';
+            } catch (e) { /* storage unavailable, default is fine */ }
+            applyTheme(saved);
+
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const theme = btn.dataset.theme;
+                    applyTheme(theme);
+                    try { localStorage.setItem('ree_theme', theme); } catch (e) { /* ignore */ }
+                });
+            });
+        })();
+
+        // ---------- 5) INTERACTIVE PROJECT ESTIMATOR ----------
+        (function () {
+            const typeWrap = document.getElementById('estimatorType');
+            const featuresWrap = document.getElementById('estimatorFeatures');
+            const costEl = document.getElementById('estimatorCost');
+            const timeEl = document.getElementById('estimatorTime');
+            if (!typeWrap || !featuresWrap || !costEl || !timeEl) return;
+
+            function recalc() {
+                const type = typeWrap.querySelector('.estimator-pill.active');
+                if (!type) return;
+                let cost = parseInt(type.dataset.base, 10) || 0;
+                let days = parseInt(type.dataset.days, 10) || 0;
+
+                featuresWrap.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+                    cost += parseInt(cb.value, 10) || 0;
+                    days += parseInt(cb.dataset.days, 10) || 0;
+                });
+
+                const low = Math.round((cost * 0.9) / 500) * 500;
+                const high = Math.round((cost * 1.15) / 500) * 500;
+
+                costEl.textContent = `₹${low.toLocaleString('en-IN')} – ₹${high.toLocaleString('en-IN')}`;
+                timeEl.textContent = `~${days} days`;
+            }
+
+            typeWrap.querySelectorAll('.estimator-pill').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    typeWrap.querySelectorAll('.estimator-pill').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    recalc();
+                });
+            });
+
+            featuresWrap.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                cb.addEventListener('change', recalc);
+            });
+
+            recalc();
         })();
     </script>
 
