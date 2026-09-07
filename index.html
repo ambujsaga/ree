@@ -1114,15 +1114,61 @@
             justify-content: center;
         }
 
-        .cinematic-video {
+        .cinematic-video-wrap {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        /* Oversize + center the embedded player so a portrait Short covers this
+           landscape frame instead of showing YouTube's black side-bars. */
+        .cinematic-video-wrap iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 220%;
+            height: 220%;
+            transform: translate(-50%, -50%);
+            border: 0;
+            pointer-events: none;
+        }
+
+        .cinematic-thumb {
             position: absolute;
             inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: none;
         }
 
-        .cinematic-section.cinematic-fallback .cinematic-video { display: none; }
+        .cinematic-section.cinematic-static .cinematic-video-wrap { display: none; }
+        .cinematic-section.cinematic-static .cinematic-thumb { display: block; cursor: pointer; }
+
+        .cinematic-play-badge {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(5, 6, 10, 0.6);
+            border: 1px solid var(--accent-light);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .cinematic-play-badge svg { width: 22px; height: 22px; color: #fff; margin-left: 3px; }
+
+        .cinematic-section.cinematic-static .cinematic-play-badge { display: flex; }
+
+        .cinematic-section.cinematic-fallback .cinematic-video-wrap,
+        .cinematic-section.cinematic-fallback .cinematic-thumb { display: none; }
 
         .cinematic-section.cinematic-fallback .cinematic-frame {
             background: linear-gradient(160deg, var(--bg) 0%, var(--bg-glow) 45%, var(--accent-deep) 130%);
@@ -1556,7 +1602,10 @@
     </section>
 
     <!-- NEW: View in Your Room — WebXR / AR preview -->
-    <!-- EDIT ME: replace ree-logo.glb / ree-logo.usdz with your real 3D model files for full AR placement -->
+    <!-- This ships with a real, working 3D model (ree-logo.glb) — a branded cube placeholder.
+         Swap ree-logo.glb for your real logo/product model any time; add ios-src="yourfile.usdz"
+         back once you have a USDZ export (Reality Converter on Mac, or an online GLB→USDZ tool)
+         to also enable AR Quick Look on iPhone/iPad. -->
     <section class="ar-section fade-up" id="ar">
         <h2 class="services-title">View It In Your Room</h2>
         <p class="services-sub">See the ree mark at real-world scale, right where you're sitting — point your phone and place it.</p>
@@ -1565,26 +1614,29 @@
             <model-viewer
                 id="arViewer"
                 src="ree-logo.glb"
-                ios-src="ree-logo.usdz"
                 alt="ree 3D logo"
                 ar
-                ar-modes="webxr scene-viewer quick-look"
+                ar-modes="webxr scene-viewer"
                 camera-controls
                 auto-rotate
                 shadow-intensity="1"
-                poster="IMG_20260707_090043.png"
                 exposure="0.9">
                 <button slot="ar-button" class="cta-btn ar-btn" id="arBtn" type="button">View in Your Room</button>
             </model-viewer>
-            <p class="ar-hint" id="arHint">Works on most modern phones — tap the button, allow camera access, then tap your floor to place it.</p>
+            <p class="ar-hint" id="arHint">Works on Android (Chrome) and WebXR-ready browsers — tap the button, allow camera access, then tap your floor to place it. iPhone support needs a USDZ file added to the project.</p>
         </div>
     </section>
 
-    <!-- NEW: Cinematic scroll-scrubbed video (Apple-style) -->
-    <!-- EDIT ME: replace cinematic-reel.mp4 with your DSLR-style brand reel (mp4, ideally under 15MB) -->
-    <section class="cinematic-section fade-up" id="cinematic">
+    <!-- NEW: Cinematic scroll-linked YouTube background (Apple-style) -->
+    <section class="cinematic-section fade-up" id="cinematic" data-yt-id="Gjhb-jiVqZY">
         <div class="cinematic-frame">
-            <video class="cinematic-video" id="cinematicVideo" src="cinematic-reel.mp4" muted playsinline preload="metadata" poster="IMG_20260707_090043.png"></video>
+            <div class="cinematic-video-wrap" id="cinematicVideoWrap">
+                <div id="cinematicPlayer"></div>
+            </div>
+            <img class="cinematic-thumb" id="cinematicThumb" alt="" loading="lazy">
+            <div class="cinematic-play-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
+            </div>
             <div class="cinematic-overlay"></div>
             <div class="cinematic-copy">
                 <h2>Every detail, considered.</h2>
@@ -2160,31 +2212,102 @@
             });
         })();
 
-        // ---------- 2) CINEMATIC SCROLL VIDEO ----------
+        // ---------- 2) CINEMATIC SCROLL — YouTube background (autoplay, muted, looped) ----------
         (function () {
             const section = document.getElementById('cinematic');
-            const video = document.getElementById('cinematicVideo');
-            if (!section || !video) return;
+            const wrap = document.getElementById('cinematicVideoWrap');
+            const thumb = document.getElementById('cinematicThumb');
+            if (!section || !wrap || !thumb) return;
 
-            if (prefersReducedMotion) return; // keep it as a static frame, no scrubbing
+            const videoId = section.dataset.ytId;
+            thumb.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-            let ready = false;
-            video.addEventListener('loadedmetadata', () => { ready = true; });
-            video.addEventListener('error', () => {
+            // Respect reduced motion: show a static, tappable thumbnail instead of an autoplaying video.
+            if (prefersReducedMotion) {
+                section.classList.add('cinematic-static');
+                thumb.addEventListener('click', () => {
+                    window.open(`https://youtube.com/shorts/${videoId}`, '_blank', 'noopener');
+                });
+                return;
+            }
+
+            let player = null;
+            let apiFailed = false;
+
+            function showFallback() {
                 section.classList.add('cinematic-fallback');
+            }
+
+            // Load the YouTube IFrame API once, even if other scripts on the page also need it.
+            function loadYouTubeAPI(onReady) {
+                if (window.YT && window.YT.Player) {
+                    onReady();
+                    return;
+                }
+                const existingCallback = window.onYouTubeIframeAPIReady;
+                window.onYouTubeIframeAPIReady = function () {
+                    if (typeof existingCallback === 'function') existingCallback();
+                    onReady();
+                };
+                if (!document.getElementById('youtubeIframeApiScript')) {
+                    const tag = document.createElement('script');
+                    tag.id = 'youtubeIframeApiScript';
+                    tag.src = 'https://www.youtube.com/iframe_api';
+                    tag.onerror = () => { apiFailed = true; showFallback(); };
+                    document.head.appendChild(tag);
+                }
+            }
+
+            loadYouTubeAPI(() => {
+                if (apiFailed || !document.getElementById('cinematicPlayer')) return;
+                player = new YT.Player('cinematicPlayer', {
+                    videoId: videoId,
+                    playerVars: {
+                        autoplay: 1,
+                        mute: 1,
+                        loop: 1,
+                        playlist: videoId,
+                        controls: 0,
+                        disablekb: 1,
+                        modestbranding: 1,
+                        playsinline: 1,
+                        rel: 0,
+                        fs: 0,
+                        iv_load_policy: 3
+                    },
+                    events: {
+                        onReady: (e) => {
+                            e.target.mute();
+                            e.target.playVideo();
+                        },
+                        onError: () => showFallback()
+                    }
+                });
             });
 
+            // Pause off-screen to save battery/data, resume when the section is back in view.
+            const playObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (!player || typeof player.playVideo !== 'function') return;
+                    if (entry.isIntersecting) {
+                        player.playVideo();
+                    } else {
+                        player.pauseVideo();
+                    }
+                });
+            }, { threshold: 0.15 });
+            playObserver.observe(section);
+
+            // Subtle scroll-linked zoom/parallax on the frame for a cinematic feel.
             function onScroll() {
                 const rect = section.getBoundingClientRect();
                 const total = rect.height - window.innerHeight;
                 if (total <= 0) return;
                 let progress = -rect.top / total;
                 progress = Math.min(Math.max(progress, 0), 1);
-                if (ready && video.duration) {
-                    video.currentTime = progress * video.duration;
-                }
+                const scale = 1.15 - (progress * 0.15);
+                wrap.style.transform = `scale(${scale})`;
             }
-
             window.addEventListener('scroll', onScroll, { passive: true });
             window.addEventListener('resize', onScroll);
             onScroll();
